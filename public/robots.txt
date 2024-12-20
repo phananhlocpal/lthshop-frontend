@@ -1,0 +1,7 @@
+# public/robots.txt
+
+User-agent: *
+Disallow: /admin/
+Disallow: /private/
+
+Sitemap: https://next-ecommerce-eight-omega.vercel.app/sitemap.xml
