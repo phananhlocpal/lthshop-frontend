@@ -39,8 +39,8 @@ function Recommender() {
     }, [currentUser]); // Thêm dependency để gọi lại khi `currentUser` thay đổi
 
     return (
-        <div className="recommender">
-            <h2>Recommended for you</h2>
+        <div className="recommender mb-10">
+            <h2 className="text-2xl font-bold mb-8">You might also like</h2>
             <div className="product-grid">
                 {products.map((product, index) => (
                     <RecommenderProductCard product={product} key={index} />

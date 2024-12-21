@@ -1,5 +1,6 @@
 import React from 'react';
 import Recommender from '@/components/home/Recommender';
+import Banner from '@/components/home/Banner';
 
 function Home() {
   return (
@@ -16,12 +17,13 @@ function Home() {
           <button>10 OFF</button>
         </div>
       </div>
+      <Banner></Banner>
       <div className="bg-white p-8">
         {/* Phần chứa hình ảnh */}
         <div className="flex justify-center">
           <div className="max-w-6xl">
             <img
-              src="https://res.cloudinary.com/dahzoj4fy/image/upload/v1734500908/xqlcshzjeqsphov9hfkj.webp"
+              src="https://static.nike.com/a/images/t_PDP_1728_v1/f_auto,q_auto:eco/b0b5ee3b-f4bc-4754-89b5-b6cb113b91b9/BLAZER+MID+%2777+VNTG.png"
               alt="Nike Mercurial Superfly 10 Elite"
               className="w-full object-cover rounded-lg"
             />

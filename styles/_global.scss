@@ -44,19 +44,19 @@ button{
     padding: 1rem;
     cursor: pointer;
     margin-bottom   : 1rem;
-    background: $color-blue;
+    background: $color-dark;
     font-size: 0.6rem;
     font-weight: bold;
     color: white;
-    border: 2px solid $color-blue;
+    border: 2px solid $color-dark;
     border-radius: 5px;
     flex-grow: 1;
     flex-shrink: 0;
     letter-spacing: 1px;
     transition: all 0.1s ease-in-out;
     &:hover{
-      background: $lighter-main;
-      border: 2px solid $lighter-main;
+      background: $color-grey;
+      border: 2px solid $color-grey;
   }
 }
 label{
