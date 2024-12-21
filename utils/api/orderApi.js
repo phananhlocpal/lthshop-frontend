@@ -24,7 +24,7 @@ const createOrderPaypal = async (order) => {
 }
 
 const createOrderVnPay = async (order) => {
-  const response = await axios.post(`${API_URL}/paypal`, order);
+  const response = await axios.post(`${API_URL}/vnpay`, order);
   return response.data;
 }
 

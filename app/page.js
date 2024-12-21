@@ -16,6 +16,93 @@ function Home() {
           <button>10 OFF</button>
         </div>
       </div>
+      <div className="bg-white p-8">
+        {/* Phần chứa hình ảnh */}
+        <div className="flex justify-center">
+          <div className="max-w-6xl">
+            <img
+              src="https://res.cloudinary.com/dahzoj4fy/image/upload/v1734500908/xqlcshzjeqsphov9hfkj.webp"
+              alt="Nike Mercurial Superfly 10 Elite"
+              className="w-full object-cover rounded-lg"
+            />
+          </div>
+        </div>
+
+        {/* Phần tiêu đề và mô tả */}
+        <div className="text-center mt-6">
+          <div className="flex justify-center items-center space-x-2">
+            <p className="text-sm text-gray-500 flex items-center">
+              <span className="text-red-500">🔥</span>
+              Top Seller
+            </p>
+          </div>
+          <h1 className="text-4xl font-extrabold text-gray-900 tracking-wide">
+            Nike Mercurial Superfly 10 Elite
+          </h1>
+          <p className="text-gray-600 mt-2">
+            The Nike Mercurial Superfly 10 Elite is the ultimate choice for
+            speed and performance. Trusted by top athletes worldwide, this boot
+            features an innovative Air Zoom unit for explosive acceleration and
+            control.
+          </p>
+          <button className="mt-4 px-6 py-3 bg-black text-white text-sm rounded-full hover:bg-gray-800 transition">
+            Shop Now
+          </button>
+        </div>
+      </div>
+
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-4">
+          <h2 className="text-2xl font-bold mb-8">Featured</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="relative group overflow-hidden rounded-lg shadow-lg">
+              <img
+                src="https://static.nike.com/a/images/f_auto/dpr_1.3,cs_srgb/h_580,c_limit/438be954-bd2c-4741-b0eb-3f9e2202580c/image.png"
+                alt="Sabrina 2"
+                className="w-full h-[400px] object-cover group-hover:scale-105 transition-transform"
+              />
+              <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              <div className="absolute bottom-5 left-5 text-white">
+                <h3 className="text-lg font-bold">Sabrina 2</h3>
+                <p className="text-sm">Made For Hoopers Who Do It All</p>
+                <button className="mt-3 bg-white text-black px-4 py-2 rounded-full text-sm font-semibold hover:bg-gray-200">
+                  Shop
+                </button>
+              </div>
+            </div>
+            <div className="relative group overflow-hidden rounded-lg shadow-lg">
+              <img
+                src="https://static.nike.com/a/images/f_auto/dpr_1.3,cs_srgb/h_580,c_limit/033cfe32-c8b9-4f79-9878-9fd4a1ca3f97/image.png"
+                alt="Air Max 90"
+                className="w-full h-[400px] object-cover group-hover:scale-105 transition-transform"
+              />
+              <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              <div className="absolute bottom-5 left-5 text-white">
+                <h3 className="text-lg font-bold">Air Max 90</h3>
+                <p className="text-sm">For Your 90s Vibes</p>
+                <button className="mt-3 bg-white text-black px-4 py-2 rounded-full text-sm font-semibold hover:bg-gray-200">
+                  Shop
+                </button>
+              </div>
+            </div>
+            <div className="relative group overflow-hidden rounded-lg shadow-lg">
+              <img
+                src="https://static.nike.com/a/images/f_auto/dpr_1.3,cs_srgb/h_580,c_limit/a0e243fe-e765-44da-a1a6-59423bf77788/image.png"
+                alt="Kids"
+                className="w-full h-[400px] object-cover group-hover:scale-105 transition-transform"
+              />
+              <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              <div className="absolute bottom-5 left-5 text-white">
+                <h3 className="text-lg font-bold">Kids</h3>
+                <p className="text-sm">Running Gear</p>
+                <button className="mt-3 bg-white text-black px-4 py-2 rounded-full text-sm font-semibold hover:bg-gray-200">
+                  Shop
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
       <div className='container'>
         <Recommender />
         <div className="bg-neutral-100 py-16">

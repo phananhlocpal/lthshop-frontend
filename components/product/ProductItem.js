@@ -8,7 +8,7 @@ import { formatPrice } from '../../utils/hooks/useUtil';
 
 function ProductCard({ product, index }) {
   const { wishlistItems, toggleWishlistItem } = useWishlist();
-  const itemExists = wishlistItems.find((item) => item.NameAlias === product.NameAlias);
+  const itemExists = wishlistItems.find((item) => item.nameAlias === product.nameAlias);
 
   return (
     <>

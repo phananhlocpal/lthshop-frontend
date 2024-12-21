@@ -42,12 +42,13 @@ function OrderSummary({ onPaymentComplete, shippingFee }) {
         customerID: currentUser.customerID,
       };
       // Gửi yêu cầu tạo URL thanh toán đến backend
+      console.log("Order data: ", orderData);
       const response = await orderApi.createOrderVnPay(orderData);
       const vnpayUrl = response.redirectUrl; 
-      window.location.href = vnpayUrl;
-      setTimeout(() => {
-        onPaymentComplete();
-      }, 5000);
+      console.log(vnpayUrl);
+      // window.location.href = vnpayUrl;
+      // onPaymentComplete();
+
     } catch (error) {
       console.error('Error initiating VNPAY payment:', error);
     }
@@ -126,10 +127,10 @@ function OrderSummary({ onPaymentComplete, shippingFee }) {
           onApprove={onApprovePaypal}
         />
       </PayPalScriptProvider>
-      <div class="vnpay-button-component flex justify-center items-center animate-fade-in mt-5 w-100">
-        <button onClick={handleVnpayPayment} class="vnpay-button flex items-center justify-center bg-white border border-gray-300 rounded-lg px-6 py-3 shadow-md transition-transform duration-300 hover:bg-gray-100 hover:border-gray-500 hover:shadow-lg hover:scale-105">
+      <div className="vnpay-button-component flex justify-center items-center animate-fade-in mt-5 w-100">
+        <button onClick={handleVnpayPayment} className="vnpay-button flex items-center justify-center bg-white border border-gray-300 rounded-lg px-6 py-3 shadow-md transition-transform duration-300 hover:bg-gray-100 hover:border-gray-500 hover:shadow-lg hover:scale-105">
           <div className='flex items-center justify-between'>
-            <img src="https://vivnpay.vn/assets/media/logo/logo-52.svg" alt="VNPAY Logo" class="w-36 h-auto" />
+            <img src="https://vivnpay.vn/assets/media/logo/logo-52.svg" alt="VNPAY Logo" className="w-36 h-auto" />
           </div>
         </button>
       </div>
