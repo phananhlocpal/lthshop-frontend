@@ -11,7 +11,7 @@ function Recommender() {
     const currentUser = useSelector(selectCurrentUser);
 
     useEffect(() => {
-        const request_url = 'http://127.0.0.1:8000/recommendations';
+        const request_url = 'https://lthstore-recommeder-djdnaeh9eudkd4eu.southeastasia-01.azurewebsites.net/recommendations';
         if (currentUser) {
             axios.post(request_url, {
                 customer_id: currentUser.id,

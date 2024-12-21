@@ -6,7 +6,7 @@ function RecommenderProduct({ product }) {
     const [ products, setProducts ] = useState([])
     useEffect(() => {
         console.log(product.productID);
-        const request_url = 'http://127.0.0.1:8000/bundle-recommendations';
+        const request_url = 'https://lthstore-recommeder-djdnaeh9eudkd4eu.southeastasia-01.azurewebsites.net/bundle-recommendations';
         axios.post(request_url, {
             product_id: product.productID,
             num_recommendations: 4
