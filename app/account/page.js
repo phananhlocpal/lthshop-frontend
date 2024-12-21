@@ -1,6 +1,7 @@
 "use client";
+
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation"; // Replace with Next.js useRouter
+import { useRouter } from "next/navigation"; 
 import { useSelector, useDispatch } from "react-redux";
 import { selectCurrentUser, setUser } from "../../store/reducers/userSlice";
 import Profile from "@/components/account/EditProfile";
@@ -16,7 +17,7 @@ function MyAccount() {
 
   useEffect(() => {
     if (!currentUser) {
-      router.push("/authentication"); // Use Next.js router to navigate
+      router.push("/authentication"); 
     }
   }, [currentUser, router]);
 
