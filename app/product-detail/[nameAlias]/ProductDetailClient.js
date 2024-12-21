@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { formatPrice } from "@/utils/hooks/useUtil";
 import { useCart } from "@/utils/hooks/useCart";
 import Head from "next/head";
+import RecommenderProduct from "@/components/product/RecommenderProduct";
 
 // Function to load Facebook SDK
 const loadFacebookSDK = () => {
@@ -152,6 +153,7 @@ export default function ProductDetailClient({ product }) {
           </div>
         </div>
       </div>
+      <RecommenderProduct product={product} />
     </div>
   );
 }

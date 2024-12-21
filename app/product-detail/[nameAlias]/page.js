@@ -1,11 +1,11 @@
 // app/product-detail/[nameAlias]/page.js
 
-import ProductDetailClient from './ProductDetailClient'; // Import client-side component
+import ProductDetailClient from './ProductDetailClient'; 
 
 // Fetch product details directly within the server-side component
 export async function generateMetadata({ params }) {
   // Await params to ensure it is resolved before accessing its properties
-  const { nameAlias } = await params;  // Await params here
+  const { nameAlias } = await params;  
   let product = null;
 
   try {
@@ -37,7 +37,7 @@ export async function generateMetadata({ params }) {
 
 export default async function ProductDetail({ params }) {
   // Await params to ensure it is resolved before accessing its properties
-  const { nameAlias } = await params;  // Await params here
+  const { nameAlias } = await params; 
   let product = null;
 
   try {

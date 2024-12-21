@@ -10,7 +10,7 @@ const tabs = ["Profile", "My Orders", "Log Out"];
 
 function MyAccount() {
   const dispatch = useDispatch();
-  const router = useRouter(); // Initialize useRouter
+  const router = useRouter(); 
   const currentUser = useSelector(selectCurrentUser);
   const [activeTab, setActiveTab] = useState(0);
 
