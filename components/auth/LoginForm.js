@@ -26,7 +26,7 @@ function Login() {
           Email
           <div className='input-wrapper'>
             <FontAwesomeIcon icon={icons.email}></FontAwesomeIcon>
-            <input type="text" {...register("email", { required: true })} />
+            <input className='w-[100%] ml-4' type="text" {...register("email", { required: true })} />
           </div>
         </label>
         {errors.email && <span>This field is required</span>}
@@ -34,7 +34,7 @@ function Login() {
           Password
           <div className='input-wrapper'>
             <FontAwesomeIcon icon={icons.lock}></FontAwesomeIcon>
-            <input type="password" {...register("password", { required: true })} />
+            <input className='w-[100%] ml-4' type="password" {...register("password", { required: true })} />
           </div>
         </label>
         {errors.password && <span>This field is required</span>}
