@@ -3,7 +3,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation'; // Sử dụng useRouter để điều hướng
 import { useDispatch } from 'react-redux';
-import { createUser } from '../../store/actions/userActions'; // Import action createUser
+import { createUser } from '../../store/actions/userActions'; 
 
 function Register() {
   const router = useRouter(); // Khởi tạo useRouter

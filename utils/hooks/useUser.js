@@ -1,7 +1,7 @@
 'use client';
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getUser, getUsers, login, logout } from "../../store/actions/userActions";
+import { getUser, getUsers, login } from "../../store/actions/userActions";
 import { selectCurrentUser, selectError, selectIsLoading, selectToken, setUser } from "../../store/reducers/userSlice";
 
 export const useUser = () => {
