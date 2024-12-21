@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { login, createUser } from "../actions/userActions";
+import { login, createUser, registerUser } from "../actions/userActions";
 
 // Hàm an toàn để parse JSON
 const safeParseJSON = (value, defaultValue = null) => {
@@ -49,6 +49,7 @@ export const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      // Login
       .addCase(login.fulfilled, (state, action) => {
         state.isLoading = false;
         state.error = null;
@@ -74,6 +75,7 @@ export const userSlice = createSlice({
           localStorage.removeItem("token");
         }
       })
+      // Create User
       .addCase(createUser.pending, (state) => {
         state.isLoading = true;
         state.error = null;
@@ -89,6 +91,25 @@ export const userSlice = createSlice({
         }
       })
       .addCase(createUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      })
+      // Register User
+      .addCase(registerUser.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(registerUser.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.currentUser = action.payload;
+        state.token = action.payload.token;
+
+        if (typeof window !== "undefined") {
+          localStorage.setItem("currentUser", JSON.stringify(action.payload));
+          localStorage.setItem("token", action.payload.token);
+        }
+      })
+      .addCase(registerUser.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
       });

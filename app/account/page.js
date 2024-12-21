@@ -6,8 +6,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { selectCurrentUser, setUser } from "../../store/reducers/userSlice";
 import Profile from "@/components/account/EditProfile";
 import Orders from "@/components/admin/OrdersTable";
+import HistoryOrder from "@/components/account/HistoryOrder";
 
-const tabs = ["Profile", "My Orders", "Log Out"];
+const tabs = ["Profile", "My Orders", "History Orders", "Log Out"];
 
 function MyAccount() {
   const dispatch = useDispatch();
@@ -22,7 +23,7 @@ function MyAccount() {
   }, [currentUser, router]);
 
   const handleTabClick = (index) => {
-    if (index === 2) {
+    if (index === 3) {
       dispatch(setUser(null));
     }
     setActiveTab(index);
@@ -46,6 +47,7 @@ function MyAccount() {
           <div className="profile-container">
             {activeTab === 0 && <Profile currentUser={currentUser} />}
             {activeTab === 1 && <Orders currentUser={currentUser} />}
+            {activeTab === 2 && <HistoryOrder currentUser={currentUser}></HistoryOrder>}
           </div>
         </div>
       )}

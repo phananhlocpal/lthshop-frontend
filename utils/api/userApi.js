@@ -23,6 +23,11 @@ const createUser = async (user) => {
   return response.data;
 }
 
+const registerUser = async (user) => {
+  const response = await axios.post(`${API_URL_AUTHEN}/register`, user);
+  return response.data;
+}
+
 const updateUser = async (userId, user) => {
   const response = await axios.put(`${API_URL}/${userId}`, user);
   return response.data;
@@ -39,6 +44,7 @@ const login = async (loginData) => {
     if (response.data.token) {
       // Lấy userId từ response và lấy cartId của người dùng
       const userId = response.data.customer.customerID;
+      console.log("userId: ", userId)
 
       // Kiểm tra xem session Storage có lưu cartItem hay ko?
       const data = sessionStorage.getItem('cartItems');
@@ -80,6 +86,7 @@ export default {
   getUser,
   getUsers,
   createUser,
+  registerUser,
   updateUser,
   deleteUser
 };

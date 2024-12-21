@@ -47,7 +47,7 @@ function Home() {
             features an innovative Air Zoom unit for explosive acceleration and
             control.
           </p>
-          <button className="mt-4 px-6 py-3 bg-black text-white text-sm rounded-full hover:bg-gray-800 transition">
+          <button className="mt-4 px-6 py-3 text-white text-sm rounded-full transition">
             Shop Now
           </button>
         </div>

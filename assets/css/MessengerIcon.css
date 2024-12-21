@@ -1,0 +1,19 @@
+.messenger-icon {
+    animation: jumpAndShake 3s infinite; /* Gọi animation mỗi 3 giây */
+  }
+  
+  @keyframes jumpAndShake {
+    0%, 100% {
+      transform: translateY(0) translateX(0); /* Vị trí ban đầu */
+    }
+    30% {
+      transform: translateY(-20px) translateX(-5px); /* Nhảy lên và lắc sang trái */
+    }
+    50% {
+      transform: translateY(-30px) translateX(5px); /* Nhảy cao hơn và lắc sang phải */
+    }
+    70% {
+      transform: translateY(-20px) translateX(-5px); /* Lắc lại sang trái */
+    }
+  }
+  
