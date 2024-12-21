@@ -45,10 +45,10 @@ function OrderSummary({ onPaymentComplete, shippingFee }) {
       console.log("Order data: ", orderData);
       const response = await orderApi.createOrderVnPay(orderData);
       const vnpayUrl = response.redirectUrl; 
-      console.log(vnpayUrl);
-      // window.location.href = vnpayUrl;
-      // onPaymentComplete();
-
+      window.location.href = vnpayUrl;
+      setTimeout(() => {
+        onPaymentComplete();
+      }, 5000)
     } catch (error) {
       console.error('Error initiating VNPAY payment:', error);
     }
