@@ -14,6 +14,7 @@ function Register() {
     try {
       // Gửi dữ liệu đăng ký lên server
       const user = await dispatch(registerUser(registerData))
+      console.log("User: ", user); 
       if (user) {
         router.push('/authentication');
       }

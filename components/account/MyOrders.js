@@ -2,9 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { fetchOrdersByUserId } from '../../store/actions/orderActions';
-import orderItemApi from '../../utils/api/orderItemApi';
-import sizeApi from '../../utils/api/sizeApi';
-import productApi from '../../utils/api/productApi';
 import { useStatusString, formatPrice, formatDateTime } from '../../utils/hooks/useUtil';
 
 function MyOrders({ currentUser }) {

@@ -3,9 +3,18 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { fetchOrdersByUserId } from "../../store/actions/orderActions"; // Điều chỉnh đường dẫn nếu cần
-import { useStatusString, formatDate } from "../../utils/hooks/useUtil";
+import { formatDate } from "../../utils/hooks/useUtil";
 import axios from "axios";
 import { variables } from "@/utils/api/variables";
+
+const statusTabs = [
+  "Pending",
+  "Processing",
+  "Shipping",
+  "Delivered",
+  "Cancelled",
+];
+const validStatuses = ["Pending", "Processing", "Shipping"]; // Các trạng thái hợp lệ cần hiển thị
 
 function Orders({ currentUser }) {
   const dispatch = useDispatch();
@@ -16,14 +25,12 @@ function Orders({ currentUser }) {
   useEffect(() => {
     if (currentUser?.customerID) {
       dispatch(fetchOrdersByUserId(currentUser.customerID)).then((response) => {
-        // Sort orders by date
         const sortedOrders = [...response.payload].sort(
           (a, b) => new Date(b.dateTime) - new Date(a.dateTime)
         );
         setOrders(sortedOrders);
 
-        // Filter orders by status
-        const validStatuses = ["Pending", "Processing"];
+        // Lọc các đơn hàng theo trạng thái hợp lệ
         const filtered = sortedOrders.filter((order) =>
           validStatuses.includes(order.status)
         );
@@ -33,23 +40,56 @@ function Orders({ currentUser }) {
   }, [dispatch, currentUser]);
 
   useEffect(() => {
-    if (selectedOrder) {
-      const fetchOrderDetails = async () => {
-        const response = await axios.get(
-          `${variables.ORDERITEM_API}/ByOrder/${selectedOrder.orderID}`
-        );
-        setSelectedOrder({
-          ...selectedOrder,
-          orderItems: response.data,
-        });
-      };
+    const fetchOrderDetails = async () => {
+      try {
+        if (selectedOrder && !selectedOrder.orderItems) {
+          // Chỉ gọi API nếu orderItems chưa được tải
+          const response = await axios.get(
+            `${variables.ORDERITEM_API}/${selectedOrder.orderID}`
+          );
+          setSelectedOrder({
+            ...selectedOrder,
+            orderItems: response.data,
+          });
+        }
+      } catch (error) {
+        console.error("Failed to fetch order details:", error);
+      }
+    };
 
-      fetchOrderDetails();
-    }
+    fetchOrderDetails();
   }, [selectedOrder]);
 
   const closeModal = () => {
     setSelectedOrder(null);
+  };
+
+  const renderStatusNav = (status) => {
+    const activeIndex = statusTabs.indexOf(status);
+
+    return (
+      <div className="checkout-nav">
+        {statusTabs.map((tab, index) => (
+          <React.Fragment key={tab}>
+            <div
+              className={`checkout-tab ${index <= activeIndex ? "active" : ""}`}
+            >
+              <span className={`${index < activeIndex ? "completed" : ""}`}>
+                {index + 1}
+              </span>
+              <p>{tab}</p>
+            </div>
+            {index < statusTabs.length - 1 && (
+              <div
+                className={`checkout-tab-line ${
+                  index < activeIndex ? "completed" : ""
+                }`}
+              />
+            )}
+          </React.Fragment>
+        ))}
+      </div>
+    );
   };
 
   return (
@@ -58,10 +98,10 @@ function Orders({ currentUser }) {
       <table className="table-auto w-full text-left border-collapse bg-white shadow-md rounded-lg">
         <thead>
           <tr className="bg-gray-100">
-            <th className="px-6 py-3 text-sm font-medium text-gray-600">ID</th>
-            <th className="px-6 py-3 text-sm font-medium text-gray-600">Order Date</th>
-            <th className="px-6 py-3 text-sm font-medium text-gray-600">Status</th>
-            <th className="px-6 py-3 text-sm font-medium text-gray-600">Customer ID</th>
+            <th className="px-6 py-3 text-sm font-medium">ID</th>
+            <th className="px-6 py-3 text-sm font-medium">Order Date</th>
+            <th className="px-6 py-3 text-sm font-medium">Payment Method</th>
+            <th className="px-6 py-3 text-sm font-medium">Status</th>
           </tr>
         </thead>
         <tbody>
@@ -71,10 +111,18 @@ function Orders({ currentUser }) {
               className="border-t hover:bg-gray-100 cursor-pointer"
               onClick={() => setSelectedOrder(order)}
             >
-              <td className="px-6 py-3 text-sm font-medium text-gray-800">{order.orderID}</td>
-              <td className="px-6 py-3 text-sm text-gray-600">{formatDate(order.dateTime)}</td>
-              <td className="px-6 py-3 text-sm text-gray-600">{order.status}</td>
-              <td className="px-6 py-3 text-sm text-gray-600">{order.customerID}</td>
+              <td className="px-6 py-3 text-sm font-medium text-gray-800">
+                {order.orderID}
+              </td>
+              <td className="px-6 py-3 text-sm text-gray-600">
+                {formatDate(order.dateTime)}
+              </td>
+              <td className="px-6 py-3 text-sm text-gray-600">
+                {order.paymentType || "N/A"}{" "}
+              </td>
+              <td className="px-6 py-3 text-sm text-gray-600">
+                {order.status}
+              </td>
             </tr>
           ))}
         </tbody>
@@ -87,61 +135,84 @@ function Orders({ currentUser }) {
               <h2 className="text-lg font-bold text-gray-800">Order Details</h2>
             </div>
             <div className="p-6">
-              <div className="mb-4">
+              {renderStatusNav(selectedOrder.status)}
+              <div className="mb-4 mt-4">
                 <p className="text-sm">
-                  <strong className="text-gray-800">Order ID:</strong> {selectedOrder.orderID}
+                  <strong className="text-gray-800">Order ID:</strong>{" "}
+                  {selectedOrder.orderID}
                 </p>
                 <p className="text-sm">
-                  <strong className="text-gray-800">Order Date:</strong> {formatDate(selectedOrder.dateTime)}
+                  <strong className="text-gray-800">Order Date:</strong>{" "}
+                  {formatDate(selectedOrder.dateTime)}
                 </p>
                 <p className="text-sm">
-                  <strong className="text-gray-800">Status:</strong> {selectedOrder.status}
+                  <strong className="text-gray-800">Status:</strong>{" "}
+                  {selectedOrder.status}
                 </p>
               </div>
-              <table className="table-auto w-full text-left border-collapse bg-white shadow-md rounded-lg">
-                <thead className="bg-gray-100">
-                  <tr>
-                    <th className="px-6 py-3 text-sm font-medium text-gray-600">Product</th>
-                    <th className="px-6 py-3 text-sm font-medium text-gray-600">Name</th>
-                    <th className="px-6 py-3 text-sm font-medium text-gray-600">Size</th>
-                    <th className="px-6 py-3 text-sm font-medium text-gray-600">Quantity</th>
-                    <th className="px-6 py-3 text-sm font-medium text-gray-600">Unit Price</th>
-                    <th className="px-6 py-3 text-sm font-medium text-gray-600">Total</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {selectedOrder.orderItems.map((item, index) => (
-                    <tr key={index} className="border-t">
-                      <td className="px-6 py-3">
-                        <img
-                          src={item.product.imageURL}
-                          alt={item.product.name}
-                          className="h-16 w-16 object-cover rounded-lg"
-                        />
-                      </td>
-                      <td className="px-6 py-3 text-sm text-gray-800">{item.product.name}</td>
-                      <td className="px-6 py-3 text-sm text-gray-800">{item.productSize.size}</td>
-                      <td className="px-6 py-3 text-sm text-gray-800">{item.quantity}</td>
-                      <td className="px-6 py-3 text-sm text-gray-800">
-                        {parseFloat(item.productSize.price).toLocaleString("vi-VN", {
-                          style: "currency",
-                          currency: "VND",
-                        })}
-                      </td>
-                      <td className="px-6 py-3 text-sm text-gray-800">
-                        {(item.quantity * item.productSize.price).toLocaleString("vi-VN", {
-                          style: "currency",
-                          currency: "VND",
-                        })}
-                      </td>
+
+              {/* Thêm chức năng cuộn cho danh sách sản phẩm */}
+              <div className="max-h-64 overflow-y-auto">
+                <table className="table-auto w-full text-left border-collapse bg-white shadow-md rounded-lg">
+                  <thead className="bg-gray-100">
+                    <tr>
+                      <th className="px-6 py-3 text-sm font-medium">Product</th>
+                      <th className="px-6 py-3 text-sm font-medium">Name</th>
+                      <th className="px-6 py-3 text-sm font-medium">Size</th>
+                      <th className="px-6 py-3 text-sm font-medium">
+                        Quantity
+                      </th>
+                      <th className="px-6 py-3 text-sm font-medium">
+                        Unit Price
+                      </th>
+                      <th className="px-6 py-3 text-sm font-medium">Total</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {selectedOrder.orderItems.map((item, index) => (
+                      <tr key={index} className="border-t">
+                        <td className="px-6 py-3">
+                          <img
+                            src={item.product.imageURL}
+                            alt={item.product.name}
+                            className="h-16 w-16 object-cover rounded-lg"
+                          />
+                        </td>
+                        <td className="px-6 py-3 text-sm text-gray-800">
+                          {item.product.name}
+                        </td>
+                        <td className="px-6 py-3 text-sm text-gray-800">
+                          {item.productSize.size}
+                        </td>
+                        <td className="px-6 py-3 text-sm text-gray-800">
+                          {item.quantity}
+                        </td>
+                        <td className="px-6 py-3 text-sm text-gray-800">
+                          {parseFloat(item.productSize.price).toLocaleString(
+                            "vi-VN",
+                            {
+                              style: "currency",
+                              currency: "VND",
+                            }
+                          )}
+                        </td>
+                        <td className="px-6 py-3 text-sm text-gray-800">
+                          {(
+                            item.quantity * item.productSize.price
+                          ).toLocaleString("vi-VN", {
+                            style: "currency",
+                            currency: "VND",
+                          })}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
             <div className="flex justify-end px-6 py-4 border-t bg-gray-50">
               <button
-                className="px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg hover:bg-blue-600 transition"
+                className="px-4 py-2 text-white text-sm font-medium rounded-lg transition"
                 onClick={closeModal}
               >
                 Close
