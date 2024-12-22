@@ -17,7 +17,9 @@ function Login() {
       router.push('/account'); 
     }
   };
-
+  const forgotPassword = () => {
+    router.push("/forgot-password")
+  }
   return (
     <div className='login'>
       <h1>Login</h1>
@@ -37,6 +39,12 @@ function Login() {
             <input className='w-[100%] ml-4' type="password" {...register("password", { required: true })} />
           </div>
         </label>
+        <div className="float-right mt-2">
+          <div></div> {/* Spacer for alignment */}
+          <a href="#" className='text-sm hover:underline' onClick={() => {
+            forgotPassword()
+          }}>Forgot password?</a>
+        </div>
         {errors.password && <span>This field is required</span>}
         <button type="submit">LOGIN</button>
       </form>

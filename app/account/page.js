@@ -7,8 +7,9 @@ import { selectCurrentUser, setUser } from "../../store/reducers/userSlice";
 import Profile from "@/components/account/EditProfile";
 import Orders from "@/components/admin/OrdersTable";
 import HistoryOrder from "@/components/account/HistoryOrder";
+import ForgotPassword from "@/components/account/ResetPassword";
 
-const tabs = ["Profile", "My Orders", "History Orders", "Log Out"];
+const tabs = ["Profile", "My Orders", "History Orders", "Reset Password", "Log Out"];
 
 function MyAccount() {
   const dispatch = useDispatch();
@@ -23,7 +24,7 @@ function MyAccount() {
   }, [currentUser, router]);
 
   const handleTabClick = (index) => {
-    if (index === 3) {
+    if (index === 4) {
       dispatch(setUser(null));
     }
     setActiveTab(index);
@@ -47,7 +48,8 @@ function MyAccount() {
           <div className="profile-container">
             {activeTab === 0 && <Profile currentUser={currentUser} />}
             {activeTab === 1 && <Orders currentUser={currentUser} />}
-            {activeTab === 2 && <HistoryOrder currentUser={currentUser}></HistoryOrder>}
+            {activeTab === 2 && <HistoryOrder currentUser={currentUser} />}
+            {activeTab === 3 && <ForgotPassword currentUser={currentUser} />}
           </div>
         </div>
       )}
