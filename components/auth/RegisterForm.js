@@ -13,7 +13,7 @@ function Register() {
   const onSubmit = async (registerData) => {
     try {
       // Gửi dữ liệu đăng ký lên server
-      const user = await dispatch(registerUser(registerData)).unwrap();
+      const user = await dispatch(registerUser(registerData))
       if (user) {
         router.push('/authentication');
       }
