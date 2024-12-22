@@ -12,16 +12,27 @@ const VerifyEmail = ({ params }) => {
 
   useEffect(() => {
     // Gọi API xác minh email
-    axios
-      .post(`https://lthshop.azurewebsites.net/api/Authen/verify-email`, {
-        token,
-      })
-      .then(() => {
+    const verifyEmail = async () => {
+      try {
+        const response = await axios.post(
+          "https://lthshop.azurewebsites.net/api/Authen/verify-email",
+          {
+            token: token, // Truyền token trong body dạng JSON
+          },
+          {
+            headers: {
+              "Content-Type": "application/json", // Đảm bảo Content-Type là application/json
+            },
+          }
+        );
         setMessage("Your email has been successfully verified!");
-      })
-      .catch(() => {
+      } catch (error) {
+        console.error("Error verifying email:", error);
         setMessage("Failed to verify email. Please try again.");
-      });
+      }
+    };
+
+    verifyEmail();
   }, [token]);
 
   useEffect(() => {
