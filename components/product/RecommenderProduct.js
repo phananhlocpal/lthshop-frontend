@@ -24,7 +24,7 @@ function RecommenderProduct({ product }) {
     }, [product.productID]); // Thêm `product.productID` làm dependency để tránh lỗi
 
     return (
-        <div className="recommender">
+        <div className="recommender mt-10">
             <h2>Recommended for you</h2>
             <div className="product-grid">
                 {products && products.map((product, index) => (

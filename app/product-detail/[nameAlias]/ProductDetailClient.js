@@ -153,7 +153,7 @@ export default function ProductDetailClient({ product }) {
               This product is made with at least 20% recycled content by weight
             </p>
           </div>
-          <div className="container border-t">
+          <div className="container border-t" style={{minHeight: '50px', padding: '0px'}}>
             <div className="space-y-4">
               {/* Size & Fit */}
               <details className="group border-b cursor-pointer">
@@ -306,7 +306,7 @@ export default function ProductDetailClient({ product }) {
           </div>
         </div>
       </div>
-      <RecommenderProduct product={product} />
+      <RecommenderProduct product={product}/>
     </div>
   );
 }
