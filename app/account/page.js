@@ -7,7 +7,7 @@ import { selectCurrentUser, setUser } from "../../store/reducers/userSlice";
 import Profile from "@/components/account/EditProfile";
 import Orders from "@/components/admin/OrdersTable";
 import HistoryOrder from "@/components/account/HistoryOrder";
-import ForgotPassword from "@/components/account/ResetPassword";
+import ResetPassword from "@/components/account/ResetPassword";
 
 const tabs = ["Profile", "My Orders", "History Orders", "Reset Password", "Log Out"];
 
@@ -49,7 +49,7 @@ function MyAccount() {
             {activeTab === 0 && <Profile currentUser={currentUser} />}
             {activeTab === 1 && <Orders currentUser={currentUser} />}
             {activeTab === 2 && <HistoryOrder currentUser={currentUser} />}
-            {activeTab === 3 && <ForgotPassword currentUser={currentUser} />}
+            {activeTab === 3 && <ResetPassword currentUser={currentUser} />}
           </div>
         </div>
       )}

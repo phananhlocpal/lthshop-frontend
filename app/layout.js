@@ -3,6 +3,7 @@ import "../styles/main.scss";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import ProviderLayout from "./Provider";
 import MessengerIcon from "./Messager";
+import Zalo from "./Zalo";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -117,13 +118,15 @@ export default function RootLayout({ children }) {
               gtag("config", "G-1HYQ8XTKYE");
             `,
           }}
-        />
+        ></script>
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ProviderLayout>{children}</ProviderLayout>
+        
         <MessengerIcon></MessengerIcon>
+        <Zalo></Zalo> 
       </body>
       <GoogleAnalytics gaId="G-1HYQ8XTKYE" />
     </html>

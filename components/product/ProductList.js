@@ -94,7 +94,7 @@ function ProductList() {
           <div>
             <nav
               aria-label="Pagination"
-              className="isolate inline-flex -space-x-px rounded-md shadow-sm"
+              className="isolate inline-flex -space-x-px rounded-md shadow-sm mt-4"
             >
               <a
                 href="#"
