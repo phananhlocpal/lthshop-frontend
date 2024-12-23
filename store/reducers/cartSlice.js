@@ -187,7 +187,7 @@ const cartSlice = createSlice({
 
       if (currentUser) {
         axios
-          .delete(`${variables.CART_API}`)
+          .delete(`${variables.CART_ITEM_API}/removeCart/${currentUser.customerID}`)
           .then(() => console.log('Cart cleared in database'))
           .catch((err) => console.error('Error clearing cart:', err));
       } else {
