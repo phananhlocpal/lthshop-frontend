@@ -5,6 +5,7 @@ import { formatPrice } from "@/utils/hooks/useUtil";
 import { useCart } from "@/utils/hooks/useCart";
 import Head from "next/head";
 import RecommenderProduct from "@/components/product/RecommenderProduct";
+import Modal from "@/components/modal/Modal";
 
 // Function to load Facebook SDK
 const loadFacebookSDK = () => {
@@ -33,6 +34,11 @@ const loadFacebookSDK = () => {
 
 export default function ProductDetailClient({ product }) {
   const { addToCart } = useCart();
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalContent, setModalContent] = useState({
+    title: "",
+    message: "",
+  });
   const [selectedSize, setSelectedSize] = useState(null); // State to store selected size
   const [fbLoaded, setFbLoaded] = useState(false); // State to check if Facebook SDK is loaded
 
@@ -44,9 +50,15 @@ export default function ProductDetailClient({ product }) {
 
   const handleAddToCart = () => {
     if (!selectedSize) {
-      alert("Please select a size before adding to cart.");
+      setModalContent({
+        title: "Error",
+        message: "Please select a size before adding to cart.",
+      });
+      setModalOpen(false); // Reset trạng thái trước khi mở
+      setTimeout(() => setModalOpen(true), 0); // Đảm bảo mở lại sau khi reset
       return;
     }
+
     addToCart({
       product: product,
       productPrice: selectedSize.price,
@@ -54,6 +66,13 @@ export default function ProductDetailClient({ product }) {
       productSize: selectedSize.size,
       quantity: 1,
     });
+
+    setModalContent({
+      title: "Success",
+      message: `Successfully added "${product.name}" (Size ${selectedSize.size}) to your cart!`,
+    });
+    setModalOpen(false); // Reset trạng thái trước khi mở
+    setTimeout(() => setModalOpen(true), 0); // Đảm bảo mở lại sau khi reset
   };
 
   // const handleFacebookShare = () => {
@@ -153,7 +172,10 @@ export default function ProductDetailClient({ product }) {
               This product is made with at least 20% recycled content by weight
             </p>
           </div>
-          <div className="container border-t" style={{minHeight: '50px', padding: '0px'}}>
+          <div
+            className="container border-t"
+            style={{ minHeight: "50px", padding: "0px" }}
+          >
             <div className="space-y-4">
               {/* Size & Fit */}
               <details className="group border-b cursor-pointer">
@@ -306,7 +328,14 @@ export default function ProductDetailClient({ product }) {
           </div>
         </div>
       </div>
-      <RecommenderProduct product={product}/>
+      {modalOpen && (
+        <Modal
+          title={modalContent.title}
+          message={modalContent.message}
+          onClose={() => setModalOpen(false)}
+        />
+      )}
+      <RecommenderProduct product={product} />
     </div>
   );
 }

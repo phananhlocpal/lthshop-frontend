@@ -26,6 +26,7 @@ function MyAccount() {
   const handleTabClick = (index) => {
     if (index === 4) {
       dispatch(setUser(null));
+      localStorage.removeItem("cartItems");
     }
     setActiveTab(index);
   };

@@ -53,56 +53,70 @@ const cartSlice = createSlice({
   },
   reducers: {
     addToCart: (state, action) => {
-      const { cartItemID, customerID, product, productPrice, productSizeID, productSize, quantity = 1, currentUser } = action.payload;
+      const { product, productPrice, productSizeID, quantity = 1, currentUser } = action.payload;
     
-      // Check if the product with the same id and size already exists in the cart
       const existingItem = state.items.find(
-        (item) => item.product.productID === product.productID && item.productSize === productSize
+        (item) =>
+          item.product.productID === product.productID &&
+          item.productSizeID === productSizeID
       );
     
-      if (existingItem && existingItem.productSizeID === productSizeID) {
-        // If the item exists, increase the quantity
+      if (existingItem) {
+        // Nếu sản phẩm đã tồn tại, tăng số lượng
         existingItem.quantity += quantity;
-
-        const cartItemID = existingItem.cartItemID;
+    
         if (currentUser) {
           axios
-            .put(`${variables.CART_ITEM_API}/${cartItemID}`, {
+            .put(`${variables.CART_ITEM_API}/${existingItem.cartItemID}`, {
+              cartItemID: existingItem.cartItemID,
               customerID: currentUser.customerID,
-              productSizeID: productSizeID,
+              productSizeID: existingItem.productSizeID,
               quantity: existingItem.quantity,
             })
-            .then(() => console.log('Cart item updated in database'))
-            .catch((err) => console.error('Error updating cart item:', err));
+            .then(() => console.log("Cart item updated in database"))
+            .catch((err) => console.error("Error updating cart item:", err.response?.data || err.message));
         } else {
-          // If the user is not authenticated, save to session
-          sessionStorage.setItem('cartItems', JSON.stringify(state.items));
+          sessionStorage.setItem("cartItems", JSON.stringify(state.items));
         }
       } else {
-        // If the item doesn't exist, add a new item to the cart
-        state.items.push({ cartItemID, customerID, product, productPrice, productSizeID, productSize, quantity  });
+        // Nếu sản phẩm chưa tồn tại, thêm mới
+        const newItem = {
+          product,
+          productPrice,
+          productSizeID,
+          quantity,
+        };
+    
+        // Tạo một bản sao mới để tránh lỗi "object is not extensible"
+        const newCartItem = { ...newItem };
+    
+        state.items.push(newCartItem);
     
         if (currentUser) {
-    
-          const newCartItem = {
-            customerId: currentUser.customerID,
-            quantity: quantity,
-            productSizeID: productSizeID,
-          };
-          
-          console.log(newCartItem)
-          // Send the POST request to the backend to save the cart item to the database
           axios
-            .post(`${variables.CART_ITEM_API}`, newCartItem)
-            .then(() => console.log('Cart item saved to database'))
-            .catch((err) => console.error('Error saving cart item:', err));
+            .post(`${variables.CART_ITEM_API}`, {
+              customerID: currentUser.customerID,
+              productSizeID,
+              quantity,
+            })
+            .then((response) => {
+              // Thay vì chỉnh sửa trực tiếp, chỉnh sửa bản sao mới
+              const index = state.items.findIndex((item) => item === newCartItem);
+              if (index !== -1) {
+                state.items[index] = {
+                  ...state.items[index],
+                  cartItemID: response.data.cartItemID,
+                };
+              }
+              console.log("Cart item added to database");
+            })
+            .catch((err) => console.error("Error adding cart item:", err.response?.data || err.message));
         } else {
-          // If the user is not authenticated, save to sessionStorage
-          sessionStorage.setItem('cartItems', JSON.stringify(state.items));
+          sessionStorage.setItem("cartItems", JSON.stringify(state.items));
         }
       }
-    },    
-
+    },
+  
     removeFromCart: (state, action) => {
       const { cartItemID, productID, productSize, currentUser } = action.payload;
     

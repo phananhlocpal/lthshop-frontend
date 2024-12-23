@@ -1,0 +1,44 @@
+[
+  {
+    "product": {
+      "productID": 1,
+      "name": "Air Jordan 1 Low",
+      "brand": "Nike",
+      "description": "Inspired by the original that debuted in 1985, the Air Jordan 1 Low offers a clean, classic look that's familiar yet always fresh. With an iconic design that pairs perfectly with any 'fit, these kicks ensure you'll always be on point.",
+      "imageURL": "https://res.cloudinary.com/dahzoj4fy/image/upload/v1733241720/l9eaozhwnhwarg4k0syo.png",
+      "nameAlias": "air-jordan-1-low",
+      "categoryID": 1,
+      "categoryName": "Shoes",
+      "productSizes": [
+        {
+          "productSizeID": 1,
+          "size": 40,
+          "price": 1800000,
+          "quantity": 10,
+          "productID": 1,
+          "productName": "Air Jordan 1 Low"
+        },
+        {
+          "productSizeID": 2,
+          "size": 41,
+          "price": 1800000,
+          "quantity": 5,
+          "productID": 1,
+          "productName": "Air Jordan 1 Low"
+        },
+        {
+          "productSizeID": 3,
+          "size": 42,
+          "price": 1400000,
+          "quantity": 15,
+          "productID": 1,
+          "productName": "Air Jordan 1 Low"
+        }
+      ]
+    },
+    "productPrice": 1800000,
+    "productSizeID": 1,
+    "productSize": 40,
+    "quantity": 1
+  }
+]

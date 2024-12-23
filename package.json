@@ -6,6 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "debug": "node --inspect-brk node_modules/.bin/next dev",
     "lint": "next lint"
   },
   "dependencies": {
@@ -14,6 +15,7 @@
     "@fortawesome/free-regular-svg-icons": "^6.7.1",
     "@fortawesome/free-solid-svg-icons": "^6.7.1",
     "@fortawesome/react-fontawesome": "^0.2.2",
+    "@headlessui/react": "^2.2.0",
     "@heroicons/react": "^2.2.0",
     "@next/third-parties": "^15.1.2",
     "@paypal/react-paypal-js": "^8.7.0",
