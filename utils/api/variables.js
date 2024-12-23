@@ -2,7 +2,7 @@ export const variables = {
     BASE_URL: "https://lthshop.azurewebsites.net/api/",
     USER_API: "https://lthshop.azurewebsites.net/api/Customers",
     PRODUCT_API: "https://lthshop.azurewebsites.net/api/Products",
-    ORDER_API: "https://lthshop.azurewebsites.net/api/Orders",
+    ORDER_API: "http://localhost:5049/api/Orders",
     PRODUCTSIZE_API: "https://lthshop.azurewebsites.net/api/Productsizes",
     ORDERITEM_API: "https://lthshop.azurewebsites.net/api/OrderItems",
     CUSTOMER_API: "https://lthshop.azurewebsites.net/api/Customers",

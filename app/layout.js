@@ -124,8 +124,6 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ProviderLayout>{children}</ProviderLayout>
-        
-        <MessengerIcon></MessengerIcon>
         <Zalo></Zalo> 
       </body>
       <GoogleAnalytics gaId="G-1HYQ8XTKYE" />

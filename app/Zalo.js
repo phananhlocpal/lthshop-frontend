@@ -22,7 +22,7 @@ function Zalo() {
   }, []);
   return (
     <div
-      className="zalo-chat-widget mb-8 bottom-5"
+      className="zalo-chat-widget"
       data-oaid="4429417708941158236"
       data-welcome-message="Rất vui khi được hỗ trợ bạn!"
       data-autopopup="0"

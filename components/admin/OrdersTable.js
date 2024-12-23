@@ -14,7 +14,7 @@ const statusTabs = [
   "Delivered",
   "Cancelled",
 ];
-const validStatuses = ["Pending", "Processing", "Shipping"]; // Các trạng thái hợp lệ cần hiển thị
+const validStatuses = ["Pending", "Processing", "Shipping"];
 
 function Orders({ currentUser }) {
   const dispatch = useDispatch();
@@ -59,7 +59,7 @@ function Orders({ currentUser }) {
 
     fetchOrderDetails();
   }, [selectedOrder]);
-
+  console.log("Orders: ", filteredOrders)
   const closeModal = () => {
     setSelectedOrder(null);
   };
