@@ -32,7 +32,7 @@ function Register() {
           <label className='input-label'>
             First Name <span>*</span>
             <div className='input-wrapper'>
-              <input type="text" {...register("firstName", { required: true })} />
+              <input type="text" {...register("firstName", { required: true })} className='w-[100%]'/>
             </div>
           </label>
           {errors.firstName && <span>This field is required</span>}
@@ -40,7 +40,7 @@ function Register() {
           <label className='input-label'>
             Last Name <span>*</span>
             <div className='input-wrapper'>
-              <input type="text" {...register("lastName", { required: true })} />
+              <input type="text" {...register("lastName", { required: true })} className='w-[100%]'/>
             </div>
           </label>
           {errors.lastName && <span>This field is required</span>}
@@ -49,7 +49,7 @@ function Register() {
         <label className='input-label'>
           Email <span>*</span>
           <div className='input-wrapper'>
-            <input type="email" {...register("email", { required: true })} />
+            <input type="email" {...register("email", { required: true })} className='w-[100%]'/>
           </div>
         </label>
         {errors.email && <span>This field is required</span>}
@@ -57,7 +57,7 @@ function Register() {
         <label className='input-label'>
           Phone <span>*</span>
           <div className='input-wrapper'>
-            <input type="phone" {...register("phone", { required: true })} />
+            <input type="phone" {...register("phone", { required: true })} className='w-[100%]'/>
           </div>
         </label>
         {errors.phone && <span>This field is required</span>}
@@ -68,6 +68,7 @@ function Register() {
             <input
               type="password"
               {...register("password", { required: true, minLength: 8, maxLength: 20 })}
+              className='w-[100%]'
             />
           </div>
         </label>
@@ -78,7 +79,7 @@ function Register() {
         <label className='input-label'>
           Address <span>*</span>
           <div className='input-wrapper'>
-            <input type="text" {...register("address", { required: true })} />
+            <input type="text" {...register("address", { required: true })} className='w-[100%]'/>
           </div>
         </label>
         {errors.address && <span>This field is required</span>}
@@ -86,7 +87,7 @@ function Register() {
         <label className='input-label'>
           City <span>*</span>
           <div className='input-wrapper'>
-            <input type="text" {...register("city", { required: true })} />
+            <input type="text" {...register("city", { required: true })} className='w-[100%]'/>
           </div>
         </label>
         {errors.city && <span>This field is required</span>}
@@ -98,6 +99,7 @@ function Register() {
               type="text"
               {...register("postalCode", { required: true })}
               defaultValue="70000" // Đặt giá trị mặc định là 70000
+              className='w-[100%]'
             />
           </div>
         </label>

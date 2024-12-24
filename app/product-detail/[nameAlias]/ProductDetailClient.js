@@ -5,7 +5,9 @@ import { formatPrice } from "@/utils/hooks/useUtil";
 import { useCart } from "@/utils/hooks/useCart";
 import Head from "next/head";
 import RecommenderProduct from "@/components/product/RecommenderProduct";
-import Modal from "@/components/modal/Modal";
+import Modal from "@/components/modal/ModalSucess";
+import ModalSucess from "@/components/modal/ModalSucess";
+import ModalFailure from "@/components/modal/ModalFailure";
 
 // Function to load Facebook SDK
 const loadFacebookSDK = () => {
@@ -34,7 +36,8 @@ const loadFacebookSDK = () => {
 
 export default function ProductDetailClient({ product }) {
   const { addToCart } = useCart();
-  const [modalOpen, setModalOpen] = useState(false);
+  const [modalSuccessOpen, setModalSuccessOpen] = useState(false);
+  const [modalFailureOpen, setModalFailureOpen] = useState(false);
   const [modalContent, setModalContent] = useState({
     title: "",
     message: "",
@@ -54,8 +57,8 @@ export default function ProductDetailClient({ product }) {
         title: "Error",
         message: "Please select a size before adding to cart.",
       });
-      setModalOpen(false); // Reset trạng thái trước khi mở
-      setTimeout(() => setModalOpen(true), 0); // Đảm bảo mở lại sau khi reset
+      setModalFailureOpen(true); // Reset trạng thái trước khi mở
+      setTimeout(() => setModalFailureOpen(true), 0); // Đảm bảo mở lại sau khi reset
       return;
     }
 
@@ -71,23 +74,10 @@ export default function ProductDetailClient({ product }) {
       title: "Success",
       message: `Successfully added "${product.name}" (Size ${selectedSize.size}) to your cart!`,
     });
-    setModalOpen(false); // Reset trạng thái trước khi mở
-    setTimeout(() => setModalOpen(true), 0); // Đảm bảo mở lại sau khi reset
+    setModalSuccessOpen(true); // Reset trạng thái trước khi mở
+    setTimeout(() => setModalSuccessOpen(true), 0); // Đảm bảo mở lại sau khi reset
   };
 
-  // const handleFacebookShare = () => {
-  //   if (fbLoaded && window.FB) {
-  //     window.FB.ui(
-  //       {
-  //         method: "share",
-  //         href: window.location.href,
-  //       },
-  //       (response) => console.log("Share response:", response)
-  //     );
-  //   } else {
-  //     alert("Facebook SDK is not loaded.");
-  //   }
-  // };
 
   return (
     <div className="container mx-auto py-12 px-4">
@@ -328,11 +318,19 @@ export default function ProductDetailClient({ product }) {
           </div>
         </div>
       </div>
-      {modalOpen && (
-        <Modal
+      {modalSuccessOpen && (
+        <ModalSucess
           title={modalContent.title}
           message={modalContent.message}
-          onClose={() => setModalOpen(false)}
+          onClose={() => setModalSuccessOpen(false)}
+        />
+      )}
+
+      {modalFailureOpen && (
+        <ModalFailure
+          title={modalContent.title}
+          message={modalContent.message}
+          onClose={() => setModalFailureOpen(false)}
         />
       )}
       <RecommenderProduct product={product} />

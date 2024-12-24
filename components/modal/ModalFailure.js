@@ -7,9 +7,9 @@ import {
   DialogPanel,
   DialogTitle,
 } from "@headlessui/react";
-import { CheckCircleIcon } from "@heroicons/react/24/outline";
+import { XCircleIcon } from "@heroicons/react/24/outline"; // Thay đổi icon
 
-export default function Modal({ message, title }) {
+export default function ModalFailure({ message, title }) {
   const [open, setOpen] = useState(true);
 
   return (
@@ -27,10 +27,12 @@ export default function Modal({ message, title }) {
           >
             <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
               <div className="sm:flex sm:items-start">
-                <div className="mx-auto flex size-12 shrink-0 items-center justify-center rounded-full bg-green-100 sm:mx-0 sm:size-10">
-                  <CheckCircleIcon
+                <div className="mx-auto flex size-12 shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:size-10">
+                  {" "}
+                  {/* Thay đổi màu nền */}
+                  <XCircleIcon
                     aria-hidden="true"
-                    className="size-6 text-green-600 mt-2"
+                    className="size-6 text-red-600 mt-2" // Thay đổi màu icon
                   />
                 </div>
                 <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
@@ -50,10 +52,10 @@ export default function Modal({ message, title }) {
               <button
                 type="button"
                 onClick={() => {
-                  setOpen(false); // Đóng modal
-                  window.location.reload(); // Reload lại trang
+                  setOpen(false);
+                  window.location.reload();
                 }}
-                className="inline-flex w-full justify-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 sm:ml-3 sm:w-auto"
+                className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto border-red-600" // Thay đổi màu nút
               >
                 Continue
               </button>
