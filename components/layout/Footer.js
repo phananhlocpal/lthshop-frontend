@@ -35,7 +35,7 @@ const Footer = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:5049/api/contacts/subscribe",
+        "https://lthshop.azurewebsites.net/api/contacts/subscribe",
         {
           method: "POST",
           headers: {
