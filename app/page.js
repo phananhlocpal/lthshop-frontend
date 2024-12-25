@@ -18,41 +18,7 @@ function Home() {
         </div>
       </div>
       <Banner></Banner>
-      <div className="bg-white p-8">
-        {/* Phần chứa hình ảnh */}
-        <div className="flex justify-center">
-          <div className="max-w-6xl">
-            <img
-              src="https://static.nike.com/a/images/t_PDP_1728_v1/f_auto,q_auto:eco/b0b5ee3b-f4bc-4754-89b5-b6cb113b91b9/BLAZER+MID+%2777+VNTG.png"
-              alt="Nike Mercurial Superfly 10 Elite"
-              className="w-full object-cover rounded-lg"
-            />
-          </div>
-        </div>
-
-        {/* Phần tiêu đề và mô tả */}
-        <div className="text-center mt-6">
-          <div className="flex justify-center items-center space-x-2">
-            <p className="text-sm text-gray-500 flex items-center">
-              <span className="text-red-500">🔥</span>
-              Top Seller
-            </p>
-          </div>
-          <h1 className="text-4xl font-extrabold text-gray-900 tracking-wide">
-            Nike Mercurial Superfly 10 Elite
-          </h1>
-          <p className="text-gray-600 mt-2">
-            The Nike Mercurial Superfly 10 Elite is the ultimate choice for
-            speed and performance. Trusted by top athletes worldwide, this boot
-            features an innovative Air Zoom unit for explosive acceleration and
-            control.
-          </p>
-          <button className="mt-4 px-6 py-3 text-white text-sm rounded-full transition">
-            Shop Now
-          </button>
-        </div>
-      </div>
-
+      
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <h2 className="text-2xl font-bold mb-8">Featured</h2>

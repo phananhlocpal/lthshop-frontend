@@ -5,9 +5,11 @@ import { useProduct } from '../../utils/hooks/useProduct';
 import { useSelector } from 'react-redux';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid';
 import useToggle from '../../utils/hooks/useUtil';
+import Spinder from '../spinder/Spinder';
 
 function ProductList() {
   const { toggle, isToggled } = useToggle();
+  const [isLoading, setIsLoading] = useState(true);
   const { products, fetchProducts } = useProduct();
   const { minPrice: filterMinPrice, maxPrice: filterMaxPrice } = useSelector((state) => state.product.filter);
 
@@ -22,6 +24,17 @@ function ProductList() {
     fetchProducts();
   }, []);
 
+  useEffect(() => {
+    // Simulate loading effect
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000); // 2 seconds loading
+
+    return () => clearTimeout(timer); // Clear timer on component unmount
+  }, []);
+  if (isLoading) {
+    return <Spinder />;
+  }
   const filteredProducts = products
     .filter((product) => {
       const minPriceFilter = minPrice === '' || product.defaultPrice >= parseFloat(minPrice);
