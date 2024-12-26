@@ -2,8 +2,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "../styles/main.scss";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import ProviderLayout from "./Provider";
-import MessengerIcon from "./Messager";
 import Zalo from "./Zalo";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

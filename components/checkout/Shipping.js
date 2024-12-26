@@ -198,7 +198,7 @@ function Details({ onShippingFeeChange }) {
                 <div>
                     <div>
                         <div>
-                            <img src="https://lotus.edu.vn/wp-content/uploads/2022/11/dich-vu-giao-hang-giaohangnhanh.png" alt="GHN" style={{width: '250px'}}/>
+                            <img src="https://static.ybox.vn/2023/2/5/1677236242906-[NEW]-LOGO-FINALPNG-03.png" alt="GHN" style={{width: '250px'}}/>
                             <strong>Giao Hàng Nhanh</strong>
                         </div>
                         {shippingFee !== null ? (

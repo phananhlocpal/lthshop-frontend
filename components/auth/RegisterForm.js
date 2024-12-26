@@ -16,7 +16,7 @@ function Register() {
       const user = await dispatch(registerUser(registerData))
       console.log("User: ", user); 
       if (user) {
-        router.push('/authentication');
+        router.push('/verify-customer');
       }
     } catch (error) {
       console.error("Registration failed:", error);

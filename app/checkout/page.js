@@ -16,6 +16,7 @@ function Checkout() {
   const currentUser = useSelector(selectCurrentUser);
   const [shippingFee, setShippingFee] = useState(0);
   const [generatedOtp, setGeneratedOtp] = useState(""); // Lưu OTP đã gửi
+  const [otpVerified, setOtpVerified] = useState(false); // Trạng thái xác minh OTP
 
   const handleShippingFeeChange = (fee) => {
     setShippingFee(fee);
@@ -74,11 +75,16 @@ function Checkout() {
     if (activeTab === 1) {
       handleSendSMS();
     }
+    if (activeTab === 2 && !otpVerified) {
+      alert("Please verify OTP before proceeding.");
+      return;
+    }
     setActiveTab(activeTab + 1); // Chuyển sang tab tiếp theo
   };
 
   const onOtpVerified = () => {
-    setActiveTab(activeTab + 1); // Chuyển sang tab tiếp theo nếu OTP đúng
+    setOtpVerified(true);
+    setActiveTab(activeTab + 1);
   };
 
   useEffect(() => {
@@ -137,7 +143,11 @@ function Checkout() {
             </button>
           )}
           {activeTab < tabs.length - 1 && (
-            <button className="next-button" onClick={onNext}>
+            <button
+              className="next-button"
+              onClick={onNext}
+              disabled={!otpVerified && activeTab === 2}
+            >
               Next
             </button>
           )}
