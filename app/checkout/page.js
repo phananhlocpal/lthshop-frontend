@@ -15,8 +15,8 @@ function Checkout() {
   const [activeTab, setActiveTab] = useState(0);
   const currentUser = useSelector(selectCurrentUser);
   const [shippingFee, setShippingFee] = useState(0);
-  const [generatedOtp, setGeneratedOtp] = useState(""); // Lưu OTP đã gửi
-  const [otpVerified, setOtpVerified] = useState(false); // Trạng thái xác minh OTP
+  const [generatedOtp, setGeneratedOtp] = useState("");
+  const [otpVerified, setOtpVerified] = useState(false);
 
   const handleShippingFeeChange = (fee) => {
     setShippingFee(fee);

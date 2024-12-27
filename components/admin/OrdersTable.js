@@ -6,6 +6,7 @@ import { fetchOrdersByUserId } from "../../store/actions/orderActions"; // Äiá»
 import { formatDate } from "../../utils/hooks/useUtil";
 import axios from "axios";
 import { variables } from "@/utils/api/variables";
+import { motion } from "motion/react";
 
 const statusTabs = [
   "Pending",
@@ -59,7 +60,7 @@ function Orders({ currentUser }) {
 
     fetchOrderDetails();
   }, [selectedOrder]);
-  console.log("Orders: ", filteredOrders)
+  console.log("Orders: ", filteredOrders);
   const closeModal = () => {
     setSelectedOrder(null);
   };
@@ -211,12 +212,15 @@ function Orders({ currentUser }) {
               </div>
             </div>
             <div className="flex justify-end px-6 py-4 border-t bg-gray-50">
-              <button
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                onHoverStart={() => console.log("hover started!")}
                 className="px-4 py-2 text-white text-sm font-medium rounded-lg transition"
                 onClick={closeModal}
               >
                 Close
-              </button>
+              </motion.button>
             </div>
           </div>
         </div>

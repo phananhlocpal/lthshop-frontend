@@ -3,6 +3,7 @@ import "../styles/main.scss";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import ProviderLayout from "./Provider";
 import Zalo from "./Zalo";
+import CanvasCursor from "@/components/cursor/CanvasCursor";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -84,6 +85,7 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <CanvasCursor></CanvasCursor>
         <ProviderLayout>{children}</ProviderLayout>
         <Zalo></Zalo>
       </body>

@@ -8,6 +8,7 @@ import RecommenderProduct from "@/components/product/RecommenderProduct";
 import Modal from "@/components/modal/ModalSucess";
 import ModalSucess from "@/components/modal/ModalSucess";
 import ModalFailure from "@/components/modal/ModalFailure";
+import { motion } from "motion/react";
 
 // Function to load Facebook SDK
 const loadFacebookSDK = () => {
@@ -77,7 +78,6 @@ export default function ProductDetailClient({ product }) {
     setModalSuccessOpen(true); // Reset trạng thái trước khi mở
     setTimeout(() => setModalSuccessOpen(true), 0); // Đảm bảo mở lại sau khi reset
   };
-
 
   return (
     <div className="container mx-auto py-12 px-4">
@@ -150,12 +150,15 @@ export default function ProductDetailClient({ product }) {
 
           {/* Action buttons */}
           <div className="flex justify-between items-center mt-6">
-            <button
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              onHoverStart={() => console.log("hover started!")}
               className="nds-btn mb3-sm css-dnr0el btn-primary-dark  btn-lg"
               onClick={handleAddToCart}
             >
               Add to Cart
-            </button>
+            </motion.button>
           </div>
           <div className="bg-gray-100 text-center p-4 rounded-lg shadow-md">
             <p className="text-gray-900 font-medium">
