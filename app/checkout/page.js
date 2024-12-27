@@ -72,13 +72,13 @@ function Checkout() {
   };
 
   const onNext = () => {
-    if (activeTab === 1) {
-      handleSendSMS();
-    }
-    if (activeTab === 2 && !otpVerified) {
-      alert("Please verify OTP before proceeding.");
-      return;
-    }
+    // if (activeTab === 1) {
+    //   handleSendSMS();
+    // }
+    // if (activeTab === 2 && !otpVerified) {
+    //   alert("Please verify OTP before proceeding.");
+    //   return;
+    // }
     setActiveTab(activeTab + 1); // Chuyển sang tab tiếp theo
   };
 
@@ -146,7 +146,7 @@ function Checkout() {
             <button
               className="next-button"
               onClick={onNext}
-              disabled={!otpVerified && activeTab === 2}
+              // disabled={!otpVerified && activeTab === 2}
             >
               Next
             </button>
