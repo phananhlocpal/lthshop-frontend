@@ -42,7 +42,7 @@ const VerifyEmail = ({ params }) => {
 
     if (countdown === 0) {
       clearInterval(timer);
-      router.push("/"); // Chuyển hướng về trang chủ
+      router.push("/authenticaion"); // Chuyển hướng về trang chủ
     }
 
     return () => clearInterval(timer);
