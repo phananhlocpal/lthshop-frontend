@@ -7,7 +7,7 @@ function VerifyCustomer() {
         <h1 className="text-2xl font-semibold text-gray-800 mb-4">
           Xác thực tài khoản
         </h1>
-        <p className="text-gray-600">Vui lòng xác thực tài khoản được gửi trong Email</p>
+        <p className="text-gray-600">Vui lòng xác thực tài khoản được gửi trong email</p>
       </div>
     </div>
   );
