@@ -16,7 +16,7 @@ function Home() {
       const timer = setTimeout(() => {
         setIsLoading(false);
         localStorage.setItem("hasSeenVideo", "true");
-      }, 3000);
+      }, 5000);
       return () => clearTimeout(timer);
     } else {
       setIsLoading(false);

@@ -102,6 +102,7 @@ function Orders({ currentUser }) {
             <th className="px-6 py-3 text-sm font-medium">ID</th>
             <th className="px-6 py-3 text-sm font-medium">Order Date</th>
             <th className="px-6 py-3 text-sm font-medium">Payment Method</th>
+            <th className="px-6 py-3 text-sm font-medium">Total</th>
             <th className="px-6 py-3 text-sm font-medium">Status</th>
           </tr>
         </thead>
@@ -118,8 +119,12 @@ function Orders({ currentUser }) {
               <td className="px-6 py-3 text-sm text-gray-600">
                 {formatDate(order.dateTime)}
               </td>
+             
               <td className="px-6 py-3 text-sm text-gray-600">
                 {order.paymentType || "N/A"}{" "}
+              </td>
+              <td className="px-6 py-3 text-sm text-gray-600">
+                {order.totalPrice}
               </td>
               <td className="px-6 py-3 text-sm text-gray-600">
                 {order.status}

@@ -9,6 +9,7 @@ import Modal from "@/components/modal/ModalSucess";
 import ModalSucess from "@/components/modal/ModalSucess";
 import ModalFailure from "@/components/modal/ModalFailure";
 import { motion } from "motion/react";
+import DrawOutlineButton from "@/components/button/DrawOutlineButton";
 
 // Function to load Facebook SDK
 const loadFacebookSDK = () => {
@@ -150,15 +151,12 @@ export default function ProductDetailClient({ product }) {
 
           {/* Action buttons */}
           <div className="flex justify-between items-center mt-6">
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-              onHoverStart={() => console.log("hover started!")}
+            <button
               className="nds-btn mb3-sm css-dnr0el btn-primary-dark  btn-lg"
               onClick={handleAddToCart}
             >
               Add to Cart
-            </motion.button>
+            </button>
           </div>
           <div className="bg-gray-100 text-center p-4 rounded-lg shadow-md">
             <p className="text-gray-900 font-medium">
