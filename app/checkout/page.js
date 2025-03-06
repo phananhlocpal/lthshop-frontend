@@ -32,7 +32,7 @@ function Checkout() {
     try {
       console.log("Attempting to send OTP...");
       const response = await fetch(
-        "https://lthshop.azurewebsites.net/api/speedsms/send",
+        "http://localhost:5049/api/speedsms/send",
         {
           method: "POST",
           headers: {

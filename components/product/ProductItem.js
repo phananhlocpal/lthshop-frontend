@@ -78,9 +78,6 @@ function ProductCard({ product, index }) {
           <h3 className="text-lg font-semibold text-gray-800">
             {product.name}
           </h3>
-          <p className="text-lg font-bold text-gray-900">
-            {formatPrice(product.productSizes[0].price)}
-          </p>
         </Link>
       </div>
     </motion.div>

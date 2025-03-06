@@ -9,7 +9,7 @@ export async function generateMetadata({ params }) {
   let product = null;
 
   try {
-    const response = await fetch("https://lthshop.azurewebsites.net/api/Products");
+    const response = await fetch("http://localhost:5049/api/Products");
     const products = await response.json();
     product = products.find((p) => p.nameAlias === nameAlias);
   } catch (err) {
@@ -41,7 +41,7 @@ export default async function ProductDetail({ params }) {
   let product = null;
 
   try {
-    const response = await fetch("https://lthshop.azurewebsites.net/api/Products");
+    const response = await fetch("http://localhost:5049/api/Products");
     const products = await response.json();
     product = products.find((p) => p.nameAlias === nameAlias);
   } catch (err) {

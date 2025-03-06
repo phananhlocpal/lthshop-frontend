@@ -54,32 +54,37 @@ export default function ProductDetailClient({ product }) {
   }, []);
 
   const handleAddToCart = () => {
+    console.log("handleAddToCart function triggered"); // Kiểm tra sự kiện click
+    
     if (!selectedSize) {
+      console.log("No size selected");
       setModalContent({
         title: "Error",
         message: "Please select a size before adding to cart.",
       });
-      setModalFailureOpen(true); // Reset trạng thái trước khi mở
-      setTimeout(() => setModalFailureOpen(true), 0); // Đảm bảo mở lại sau khi reset
+      setModalFailureOpen(true);
       return;
     }
-
-    addToCart({
+  
+    const cartItem = {
       product: product,
       productPrice: selectedSize.price,
       productSizeID: selectedSize.productSizeID,
       productSize: selectedSize.size,
       quantity: 1,
-    });
-
+    };
+  
+    console.log("Adding to cart:", cartItem); // Kiểm tra dữ liệu
+    
+    addToCart(cartItem);
+  
     setModalContent({
       title: "Success",
       message: `Successfully added "${product.name}" (Size ${selectedSize.size}) to your cart!`,
     });
-    setModalSuccessOpen(true); // Reset trạng thái trước khi mở
-    setTimeout(() => setModalSuccessOpen(true), 0); // Đảm bảo mở lại sau khi reset
+    setModalSuccessOpen(true);
   };
-
+  
   return (
     <div className="container mx-auto py-12 px-4">
       <Head>
