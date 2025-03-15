@@ -1,15 +1,11 @@
 "use client";
-
 import React, { useState, useEffect } from "react";
-import { formatPrice } from "@/utils/hooks/useUtil";
 import { useCart } from "@/utils/hooks/useCart";
 import Head from "next/head";
 import RecommenderProduct from "@/components/product/RecommenderProduct";
-import Modal from "@/components/modal/ModalSucess";
 import ModalSucess from "@/components/modal/ModalSucess";
 import ModalFailure from "@/components/modal/ModalFailure";
-import { motion } from "motion/react";
-import DrawOutlineButton from "@/components/button/DrawOutlineButton";
+import { formatPrice } from "@/utils/hooks/useUtil";
 
 // Function to load Facebook SDK
 const loadFacebookSDK = () => {
@@ -40,12 +36,16 @@ export default function ProductDetailClient({ product }) {
   const { addToCart } = useCart();
   const [modalSuccessOpen, setModalSuccessOpen] = useState(false);
   const [modalFailureOpen, setModalFailureOpen] = useState(false);
+  const [sellingPrice, setSellingPrice] = useState(null);
+  const [quantity, setQuantity] = useState(1);
   const [modalContent, setModalContent] = useState({
     title: "",
     message: "",
   });
   const [selectedSize, setSelectedSize] = useState(null); // State to store selected size
   const [fbLoaded, setFbLoaded] = useState(false); // State to check if Facebook SDK is loaded
+  const [filteredSizes, setFilteredSizes] = useState([]); // State to store filtered sizes
+  const [isOutOfStock, setIsOutOfStock] = useState(false); // State to check if selected size is out of stock
 
   useEffect(() => {
     loadFacebookSDK()
@@ -53,9 +53,32 @@ export default function ProductDetailClient({ product }) {
       .catch((err) => console.error(err));
   }, []);
 
+  useEffect(() => {
+    const fetchPrices = async () => {
+      const availableSizes = [];
+      for (let size of product.productSizes) {
+        try {
+          const response = await fetch(
+            `http://localhost:5049/api/ProductPrices/${size.productSizeID}`
+          );
+          const data = await response.json();
+
+          if (data.productPriceStatus === 0) {
+            availableSizes.push(size); // Add size to the list if productPriceStatus is 0
+          }
+        } catch (error) {
+          console.error("Error fetching product price status:", error);
+        }
+      }
+      setFilteredSizes(availableSizes); // Set the filtered sizes to state
+    };
+
+    fetchPrices(); // Fetch the prices when the product changes
+  }, [product]);
+
   const handleAddToCart = () => {
-    console.log("handleAddToCart function triggered"); // Kiểm tra sự kiện click
-    
+    console.log("handleAddToCart function triggered");
+
     if (!selectedSize) {
       console.log("No size selected");
       setModalContent({
@@ -65,26 +88,81 @@ export default function ProductDetailClient({ product }) {
       setModalFailureOpen(true);
       return;
     }
-  
+
+    // Check if the selected size is out of stock (realQuantity < 1)
+    if (isOutOfStock || selectedSize.realQuantity < 1) {
+      console.log("Out of stock");
+      setModalContent({
+        title: "Error",
+        message: "Sorry, this product is out of stock.",
+      });
+      setModalFailureOpen(true);
+      return;
+    }
+
     const cartItem = {
       product: product,
-      productPrice: selectedSize.price,
+      productPrice: sellingPrice,
       productSizeID: selectedSize.productSizeID,
       productSize: selectedSize.size,
-      quantity: 1,
+      quantity: quantity,
     };
-  
-    console.log("Adding to cart:", cartItem); // Kiểm tra dữ liệu
-    
+
+    console.log("Adding to cart:", cartItem);
+
     addToCart(cartItem);
-  
+
     setModalContent({
       title: "Success",
       message: `Successfully added "${product.name}" (Size ${selectedSize.size}) to your cart!`,
     });
     setModalSuccessOpen(true);
   };
-  
+
+  const handleSizeChange = async (e) => {
+    const selectedSize = JSON.parse(e.target.value);
+    setSelectedSize(selectedSize);
+
+    try {
+      // Fetching the price data
+      const response = await fetch(
+        `http://localhost:5049/api/ProductPrices/${selectedSize.productSizeID}`
+      );
+      const data = await response.json();
+
+      if (data && data.sellingPrice !== undefined) {
+        setSellingPrice(data.sellingPrice);
+      } else {
+        console.error("Price data not found");
+        setSellingPrice(0); // Set to a default value if price is missing
+      }
+
+      // Fetch real quantity for the selected size
+      const quantityResponse = await fetch(
+        `http://localhost:5049/api/ProductSizes/${selectedSize.productSizeID}`
+      );
+      const quantityData = await quantityResponse.json();
+      console.log("Quantity data:", quantityData);
+      if (quantityData && quantityData.realQuantity !== undefined) {
+        const realQuantity = quantityData.realQuantity;
+        console.log("Real quantity:", realQuantity);
+        setQuantity(1); // Reset quantity to 1
+        if (realQuantity === 0) {
+          setIsOutOfStock(true);
+        } else {
+          setIsOutOfStock(false);
+        }
+      } else {
+        console.error("Error fetching product size realQuantity");
+        setIsOutOfStock(true); // Set to out of stock if realQuantity data is not found
+      }
+    } catch (error) {
+      console.error("Error fetching product price or size data:", error);
+      setSellingPrice(0); // Reset to 0 or some default value in case of an error
+      setIsOutOfStock(true); // Set to out of stock if error occurs
+    }
+  };
+
   return (
     <div className="container mx-auto py-12 px-4">
       <Head>
@@ -108,24 +186,18 @@ export default function ProductDetailClient({ product }) {
           <h1 className="text-3xl font-bold text-gray-900">
             {product.name || "Product Name"}
           </h1>
-          <div
-            className="fb-share-button fixed bottom-3"
-            data-href={window.location.href}
-            data-layout="button"
-            data-size="large"
-          ></div>
           <h3
             className="text-xl italic text-gray-500"
             style={{ fontWeight: "400", fontSize: "1.5rem" }}
           >
-            {product.brand || "Product Name"}
+            {product.brand || "Product Brand"}
           </h3>
 
           <p className="text-gray-700">
             {product.description || "No description available."}
           </p>
 
-          {product.productSizes && product.productSizes.length > 0 && (
+          {filteredSizes && filteredSizes.length > 0 && (
             <div>
               <label
                 htmlFor="size-select"
@@ -136,191 +208,69 @@ export default function ProductDetailClient({ product }) {
               <select
                 id="size-select"
                 className="border border-gray-300 rounded-md p-2 w-full"
-                onChange={(e) => setSelectedSize(JSON.parse(e.target.value))}
+                onChange={(e) => handleSizeChange(e)}
               >
                 <option value="">Select size</option>
-                {[...product.productSizes]
+                {[...filteredSizes]
                   .sort((a, b) => a.size - b.size)
-                  .map((size, index) => (
+                  .map((size) => (
                     <option
-                      key={`${size.size}-${size.price}`}
+                      key={size.productSizeID}
                       value={JSON.stringify(size)}
                     >
-                      EU {size.size} - {formatPrice(size.price)}{" "}
-                      {size.quantity <= 3 ? `(only ${size.quantity} left)` : ""}
+                      EU {size.size} - {size.price} (Stock: {size.realQuantity})
                     </option>
                   ))}
               </select>
             </div>
           )}
 
-          {/* Action buttons */}
+          {selectedSize && sellingPrice !== null && !isNaN(sellingPrice) && (
+            <div className="mt-4">
+              <p className="text-gray-700 font-medium text-xl font-semibold text-red-500">
+                Price: ${formatPrice(sellingPrice)}
+              </p>
+            </div>
+          )}
+
+          {selectedSize && (
+            <div className="mt-4">
+              <p className="text-gray-700 font-medium">
+                Stock Available: {selectedSize.realQuantity}
+              </p>
+              {isOutOfStock && (
+                <p className="text-red-500 font-medium">Out of stock</p>
+              )}
+              <label
+                htmlFor="quantity"
+                className="block text-gray-700 font-medium mt-2"
+              >
+                Quantity
+              </label>
+              <input
+                type="number"
+                id="quantity"
+                min="1"
+                max={selectedSize.realQuantity}
+                value={quantity}
+                onChange={(e) => setQuantity(Number(e.target.value))}
+                className="border border-gray-300 rounded-md p-2 w-full"
+                disabled={isOutOfStock} // Disable the quantity input if out of stock
+              />
+              <p className="text-gray-700 mt-2">
+                {quantity} / {selectedSize.realQuantity}
+              </p>
+            </div>
+          )}
+
           <div className="flex justify-between items-center mt-6">
             <button
-              className="nds-btn mb3-sm css-dnr0el btn-primary-dark  btn-lg"
+              className="nds-btn mb3-sm css-dnr0el btn-primary-dark btn-lg"
               onClick={handleAddToCart}
+              disabled={isOutOfStock} // Disable the "Add to Cart" button if out of stock
             >
               Add to Cart
             </button>
-          </div>
-          <div className="bg-gray-100 text-center p-4 rounded-lg shadow-md">
-            <p className="text-gray-900 font-medium">
-              This product is made with at least 20% recycled content by weight
-            </p>
-          </div>
-          <div
-            className="container border-t"
-            style={{ minHeight: "50px", padding: "0px" }}
-          >
-            <div className="space-y-4">
-              {/* Size & Fit */}
-              <details className="group border-b cursor-pointer">
-                <summary className="flex justify-between items-center">
-                  <span className="text-base font-medium text-gray-800 text-left flex-1">
-                    Size & Fit
-                  </span>
-                  <svg
-                    className="w-5 h-5 text-gray-600 transform group-open:rotate-180 transition-transform"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M19 9l-7 7-7-7"
-                    />
-                  </svg>
-                </summary>
-                <div className="mt-4 text-gray-600 text-sm">
-                  <ul className="list-disc pl-5">
-                    <li>Fits small; we recommend ordering half a size up</li>
-                    <li>
-                      <a
-                        href="https://www.nike.com/vn/size-fit/mens-footwear"
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-blue-500 hover:underline"
-                      >
-                        Size Guide
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </details>
-
-              {/* Free Delivery and Returns */}
-              <details className="group border-b cursor-pointer">
-                <summary className="flex justify-between items-center py-4">
-                  <span className="text-base font-medium text-gray-800 text-left flex-1">
-                    Free Delivery and Returns
-                  </span>
-                  <svg
-                    className="w-5 h-5 text-gray-600 transform group-open:rotate-180 transition-transform"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M19 9l-7 7-7-7"
-                    />
-                  </svg>
-                </summary>
-                <div className="mt-4 text-gray-600 text-sm">
-                  <p>
-                    Your order of 5.000.000₫ or more gets free standard
-                    delivery.
-                  </p>
-                  <ul className="list-disc pl-5 mt-2">
-                    <li>Standard delivered 4-5 Business Days</li>
-                    <li>Express delivered 2-4 Business Days</li>
-                  </ul>
-                  <p className="mt-2">
-                    Nike Members enjoy{" "}
-                    <a
-                      href="https://www.nike.com/vn/help/a/returns-policy-gs"
-                      target="_blank"
-                      rel="noreferrer"
-                      className="underline text-blue-500"
-                    >
-                      free returns
-                    </a>
-                    .
-                  </p>
-                </div>
-              </details>
-
-              {/* How This Was Made */}
-              <details className="group border-b cursor-pointer">
-                <summary className="flex justify-between items-center py-4">
-                  <span className="text-base font-medium text-gray-800 text-left flex-1">
-                    How This Was Made
-                  </span>
-                  <svg
-                    className="w-5 h-5 text-gray-600 transform group-open:rotate-180 transition-transform"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M19 9l-7 7-7-7"
-                    />
-                  </svg>
-                </summary>
-                <div className="mt-4 text-gray-600 text-sm">
-                  <p>
-                    This product was responsibly designed utilizing recycled
-                    materials from post-consumer and/or post-manufactured waste.
-                  </p>
-                  <p className="mt-2">
-                    <a
-                      href="https://www.nike.com"
-                      target="_blank"
-                      rel="noreferrer"
-                      className="underline text-blue-500"
-                    >
-                      Learn more about our Move to Zero journey
-                    </a>
-                  </p>
-                </div>
-              </details>
-
-              {/* Reviews */}
-              <details className="group border-b cursor-pointer">
-                <summary className="flex justify-between items-center py-4">
-                  <span className="text-base font-medium text-gray-800 text-left flex-1">
-                    Reviews (28)
-                  </span>
-                  <svg
-                    className="w-5 h-5 text-gray-600 transform group-open:rotate-180 transition-transform"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M19 9l-7 7-7-7"
-                    />
-                  </svg>
-                </summary>
-                <div className="mt-4 text-gray-600 text-sm">
-                  <p>Here are some reviews...</p>
-                </div>
-              </details>
-            </div>
           </div>
         </div>
       </div>

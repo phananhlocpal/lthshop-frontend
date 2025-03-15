@@ -25,6 +25,7 @@ function OrderSummary({ onPaymentComplete, shippingFee }) {
         const response = await fetch('https://api.exchangerate-api.com/v4/latest/VND');
         const data = await response.json();
         const vndToUsdRate = data.rates.USD; // Extract the USD rate from the API response
+        console.log(total);
         const convertedTotal = total * vndToUsdRate; // Convert VND to USD
         setUsdTotal(convertedTotal.toFixed(2)); // Update state with the USD total
       } catch (error) {
@@ -38,7 +39,7 @@ function OrderSummary({ onPaymentComplete, shippingFee }) {
   const handleVnpayPayment = async () => {
     try {
       const orderData = {
-        totalPrice: defaultTotal,
+        totalPrice: total,
         customerID: currentUser.customerID,
       };
       // Gửi yêu cầu tạo URL thanh toán đến backend

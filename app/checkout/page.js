@@ -22,6 +22,7 @@ function Checkout() {
     setShippingFee(fee);
   };
 
+  /*
   const handleSendSMS = async () => {
     if (!currentUser || !currentUser.phone) {
       console.log("Fail: No phone number available");
@@ -70,10 +71,11 @@ function Checkout() {
       alert("Error sending OTP. Please check the console for details.");
     }
   };
+  */
 
   const onNext = () => {
     if (activeTab === 1) {
-      handleSendSMS();
+      // handleSendSMS(); // Đã comment lại để vô hiệu hóa gửi SMS
     }
     if (activeTab === 2 && !otpVerified) {
       alert("Please verify OTP before proceeding.");

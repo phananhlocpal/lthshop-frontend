@@ -40,9 +40,24 @@ export default function useToggle(initialValue = false) {
   return { toggle, isToggled };
 }
 
-export function formatPrice(price) {
+export const formatPrice = (price) => {
+  // If the price is a string (e.g. "60 ₫"), extract the numeric part
+  if (typeof price === 'string') {
+    // Remove any non-numeric characters and convert to a number
+    price = parseFloat(price.replace(/[^\d.-]/g, ''));
+  }
+
+  // Check if the price is a valid number
+  if (typeof price !== 'number' || isNaN(price)) {
+    console.error('Invalid price value:', price);  // Log invalid price
+    return 'N/A';  // Return a default value like 'N/A' if invalid
+  }
+
+  // Format the price using toLocaleString
   return price.toLocaleString('da-DK', { style: 'currency', currency: 'VND' });
-}
+};
+
+
 
 export function formatDate(date) {
   const options = { year: 'numeric', month: 'long', day: 'numeric' };
