@@ -123,23 +123,6 @@ const Footer = () => {
           </li>
         </ul>
       </div>
-      <div className="footer-map">
-        <h3>OUR LOCATION</h3>
-        <Map
-          mapboxAccessToken="pk.eyJ1IjoibWluaGhpZXUyMDAzIiwiYSI6ImNtNTN6cHowejJnYW4yc3E3aDlqaW40anYifQ.ZjW80cSGmue9b2oxkJjxFQ"
-          initialViewState={{
-            longitude: 106.6822,
-            latitude: 10.7469,
-            zoom: 15,
-          }}
-          style={{ width: "100%", height: "300px", borderRadius: "8px" }}
-          mapStyle="mapbox://styles/mapbox/streets-v9"
-        >
-          <Marker longitude={106.6822} latitude={10.7469} anchor="bottom">
-           
-          </Marker>
-        </Map>
-      </div>
 
       <div className="footer-socials">
         <div className="social-icon-container">

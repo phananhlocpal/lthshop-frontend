@@ -5,6 +5,7 @@ import { useCart } from "../../utils/hooks/useCart";
 import { selectCurrentUser } from "../../store/reducers/userSlice";
 import { useSelector } from 'react-redux';
 import orderApi from '../../utils/api/orderApi';
+import { formatPrice } from '@/utils/hooks/useUtil';
 
 function OrderSummary({ onPaymentComplete, shippingFee }) {
   const [usdTotal, setUsdTotal] = useState(null);
@@ -89,7 +90,7 @@ function OrderSummary({ onPaymentComplete, shippingFee }) {
     <div className='order-summary'>
       <div className="space-between">
         <p>Subtotal</p>
-        <p>{subtotal} VND</p>
+        <p>{formatPrice(subtotal)}</p>
       </div>
       {discount > 0 && (
         <div className="space-between">
@@ -99,18 +100,18 @@ function OrderSummary({ onPaymentComplete, shippingFee }) {
       )}
       <div className="space-between">
         <p>Delivery</p>
-        <p>{shippingFee?.toLocaleString() || 0} VND</p>
+        <p>{formatPrice(shippingFee)|| 0}</p>
       </div>
       <div className="line"></div>
       <div className="space-between bold">
-        <p>Total (VND)</p>
-        <p>{total.toLocaleString()} VND</p>
+        <p>Total</p>
+        <p>{formatPrice(total)}</p>
       </div>
-      <div className='space-between bold'>
+      {/* <div className='space-between bold'>
         <p>Total (USD)</p>
         <p>{usdTotal} USD</p>
-      </div>
-      <PayPalScriptProvider options={{ "client-id": "ASWQENE-qmdKB-AOzSTZFtuJfz8v26F7NxtFgpgAMvDGaeACJBuz6EOXju2d5KlXJ9h2QoJRM6XrpHi_", currency: "USD" }}>
+      </div> */}
+      {/* <PayPalScriptProvider options={{ "client-id": "ASWQENE-qmdKB-AOzSTZFtuJfz8v26F7NxtFgpgAMvDGaeACJBuz6EOXju2d5KlXJ9h2QoJRM6XrpHi_", currency: "USD" }}>
         <PayPalButtons
           style={buttonStyles}
           createOrder={(data, actions) => {
@@ -127,7 +128,7 @@ function OrderSummary({ onPaymentComplete, shippingFee }) {
           }}
           onApprove={onApprovePaypal}
         />
-      </PayPalScriptProvider>
+      </PayPalScriptProvider> */}
       <div className="vnpay-button-component flex justify-center items-center animate-fade-in mt-5 w-100">
         <button onClick={handleVnpayPayment} className="vnpay-button flex items-center justify-center bg-white border border-gray-300 rounded-lg px-6 py-3 shadow-md transition-transform duration-300 hover:bg-gray-100 hover:border-gray-500 hover:shadow-lg hover:scale-105">
           <div className='flex items-center justify-between'>

@@ -109,6 +109,7 @@ const cartSlice = createSlice({
                 };
               }
               console.log("Cart item added to database");
+              console.log("Items after adding:", state.items);
             })
             .catch((err) => console.error("Error adding cart item:", err.response?.data || err.message));
         } else {
@@ -116,7 +117,6 @@ const cartSlice = createSlice({
         }
       }
     },
-  
     removeFromCart: (state, action) => {
       const { cartItemID, productID, productSize, currentUser } = action.payload;
     
@@ -214,7 +214,7 @@ const cartSlice = createSlice({
         (acc, item) => acc + item.productPrice * item.quantity,
         0
       );
-
+      
       if (subtotal >= DELIVERY_THRESHOLD) {
         state.delivery = 0;
         state.subtotal = subtotal;
@@ -223,7 +223,6 @@ const cartSlice = createSlice({
         state.subtotal = subtotal;
       }
     },
-
     updateDelivery: (state, action) => {
       state.delivery = action.payload.deliveryCost;
     },
@@ -231,9 +230,14 @@ const cartSlice = createSlice({
     applyDiscount: (state, action) => {
       state.discount = action.payload.discount;
     },
-
+    setSubTotal: (state, action) => {
+      state.subtotal = action.payload;
+    },
+    setTotal: (state, action) => {
+      state.total = action.payload;
+    },
     getTotal: (state) => {
-      state.total = state.subtotal - state.subtotal * state.discount + state.delivery;
+      state.total = state.subtotal - state.subtotal * state.discount;
     },
   },
   extraReducers: (builder) => {
@@ -249,6 +253,8 @@ export const {
   removeFromCart,
   updateQuantity,
   clearCart,
+  setSubTotal,
+  setTotal,
   calculateSubtotal,
   updateDelivery,
   applyDiscount,

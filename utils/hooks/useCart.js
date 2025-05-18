@@ -1,7 +1,7 @@
 "use client";
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addToCart, removeFromCart, updateQuantity, calculateSubtotal, getTotal, applyDiscount, clearCart, loadCart } from '../../store/reducers/cartSlice';
+import { addToCart, removeFromCart, updateQuantity, calculateSubtotal, getTotal, applyDiscount, clearCart, loadCart, setSubTotal, setTotal } from '../../store/reducers/cartSlice';
 import { formatPrice } from '../hooks/useUtil';
 import { selectCurrentUser } from '../../store/reducers/userSlice';
 
@@ -12,11 +12,14 @@ export const useCart = () => {
   const delivery = useSelector(state => state.cart.delivery);
   const discount = useSelector(state => state.cart.discount);
   const total = useSelector(state => state.cart.total);
+  const [productPrices, setProductPrices] = useState({});
   const quantity = items.reduce((acc, item) => acc + item.quantity, 0);
 
   console.log("items", items);
 
   const currentUser = useSelector(selectCurrentUser);
+
+
 
   useEffect(() => {
     dispatch(loadCart(currentUser));  
@@ -30,6 +33,40 @@ export const useCart = () => {
     dispatch(getTotal());
   }, [subtotal, delivery, dispatch, discount]);
 
+  useEffect(() => {
+    const fetchProductPrices = async () => {
+      const priceData = {};
+      for (const item of items) {
+        try {
+          const response = await fetch(`http://localhost:5049/api/ProductPrices/${item.productSizeID}`);
+          const data = await response.json();
+          if (data && data.sellingPrice) {
+            priceData[item.productSizeID] = data.sellingPrice; // Store the price for each productSizeID
+          }
+        } catch (error) {
+          console.error("Error fetching product price:", error);
+        }
+      }
+      setProductPrices(priceData); // Update the prices after fetching
+    };
+
+    fetchProductPrices();
+  }, [items]);
+
+  // Calculate subtotal using the fetched product prices
+  useEffect(() => {
+    const calculatedSubtotal = items.reduce((acc, item) => {
+      const price = productPrices[item.productSizeID] || 0;
+      return acc + (price * item.quantity);
+    }, 0);
+
+    // Update subtotal in Redux
+    dispatch(setSubTotal(calculatedSubtotal));
+    // Calculate and update total
+    const discountAmount = discount > 0 ? calculatedSubtotal * discount : 0;
+    const calculatedTotal = calculatedSubtotal - discountAmount;
+    dispatch(setTotal(calculatedTotal));
+  }, [items, productPrices, discount, delivery, dispatch]);
   const addToCartHandler = (item) => {
     dispatch(addToCart({ cartItemID: item.cartItemID,  product: item.product, productPrice: item.productPrice, productSizeID: item.productSizeID, productSize: item.productSize, quantity: item.quantity, currentUser: currentUser }));
   };
@@ -73,9 +110,9 @@ export const useCart = () => {
     items, 
     defaultSubtotal: subtotal,
     defaultTotal: total, 
-    subtotal: subtotal.toLocaleString(), 
+    subtotal, 
     delivery: formatPrice(delivery), 
-    total: formatPrice(total), 
+    total, 
     quantity,
     discount
   };

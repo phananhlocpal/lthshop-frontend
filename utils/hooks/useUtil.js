@@ -53,11 +53,14 @@ export const formatPrice = (price) => {
     return 'N/A';  // Return a default value like 'N/A' if invalid
   }
 
-  // Format the price using toLocaleString
-  return price.toLocaleString('da-DK', { style: 'currency', currency: 'VND' });
+  // Format the price using toLocaleString for Vietnamese currency
+  return price.toLocaleString('vi-VN', { 
+    style: 'currency', 
+    currency: 'VND', 
+    minimumFractionDigits: 0,  // Don't show decimals
+    maximumFractionDigits: 0   // Don't show decimals
+  });
 };
-
-
 
 export function formatDate(date) {
   const options = { year: 'numeric', month: 'long', day: 'numeric' };

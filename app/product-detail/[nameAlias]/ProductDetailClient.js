@@ -228,7 +228,7 @@ export default function ProductDetailClient({ product }) {
           {selectedSize && sellingPrice !== null && !isNaN(sellingPrice) && (
             <div className="mt-4">
               <p className="text-gray-700 font-medium text-xl font-semibold text-red-500">
-                Price: ${formatPrice(sellingPrice)}
+                Price: {formatPrice(sellingPrice)}
               </p>
             </div>
           )}

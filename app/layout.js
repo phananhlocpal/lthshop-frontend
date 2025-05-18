@@ -85,9 +85,9 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <CanvasCursor></CanvasCursor>
+        {/* <CanvasCursor></CanvasCursor> */}
         <ProviderLayout>{children}</ProviderLayout>
-        <Zalo></Zalo>
+        {/* <Zalo></Zalo> */}
       </body>
       <GoogleAnalytics gaId="G-1HYQ8XTKYE" />
     </html>

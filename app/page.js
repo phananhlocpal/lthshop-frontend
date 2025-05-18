@@ -8,20 +8,20 @@ import { useState, useEffect } from "react";
 function Home() {
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    // Kiểm tra xem video đã được xem chưa trong localStorage
-    const hasSeenVideo = localStorage.getItem("hasSeenVideo");
+  // useEffect(() => {
+  //   // Kiểm tra xem video đã được xem chưa trong localStorage
+  //   const hasSeenVideo = localStorage.getItem("hasSeenVideo");
 
-    if (!hasSeenVideo) {
-      const timer = setTimeout(() => {
-        setIsLoading(false);
-        localStorage.setItem("hasSeenVideo", "true");
-      }, 5000);
-      return () => clearTimeout(timer);
-    } else {
-      setIsLoading(false);
-    }
-  }, []);
+  //   if (!hasSeenVideo) {
+  //     const timer = setTimeout(() => {
+  //       setIsLoading(false);
+  //       localStorage.setItem("hasSeenVideo", "true");
+  //     }, 5000);
+  //     return () => clearTimeout(timer);
+  //   } else {
+  //     setIsLoading(false);
+  //   }
+  // }, []);
 
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
@@ -29,19 +29,6 @@ function Home() {
     damping: 30,
     restDelta: 0.001,
   });
-  if (isLoading) {
-    return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black">
-        <video
-          src="https://res.cloudinary.com/dahzoj4fy/video/upload/v1735328989/uzfrtdt3svsfhpllq5em.mp4"
-          autoPlay
-          loop
-          muted
-          className="w-full h-full object-cover"
-        />
-      </div>
-    );
-  }
   return (
     <>
       <motion.div
